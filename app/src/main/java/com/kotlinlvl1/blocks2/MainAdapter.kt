@@ -1,19 +1,25 @@
 package com.kotlinlvl1.blocks2
 
-import android.graphics.Color
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
+import coil.load
+import coil.transform.CircleCropTransformation
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import org.json.JSONObject
+import java.io.IOException
 
 class MainAdapter : RecyclerView.Adapter<MainViewHolder>() {
 
-    val items: ArrayList<Int> = ArrayList()
+    val items: ArrayList<Img> = ArrayList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainViewHolder {
         return MainViewHolder(
-            LayoutInflater.from(parent.context).inflate(R.layout.square_item, null)
+            LayoutInflater.from(parent.context).inflate(R.layout.image_item, null)
         )
     }
 
@@ -22,23 +28,21 @@ class MainAdapter : RecyclerView.Adapter<MainViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: MainViewHolder, position: Int) {
-        holder.bind(position)
+        holder.bind(items[position])
     }
 
 }
 
 class MainViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-    private val square: TextView = itemView.findViewById(R.id.square)
+    private val img: ImageView = itemView.findViewById(R.id.img)
 
-    fun bind(position: Int) {
-        val color: Int = if (position % 2 == 0) {
-            Color.RED
-        } else {
-            Color.BLUE
+    fun bind(item: Img) {
+        println(item)
+        img.load(item.url){
+            crossfade(true)
+            placeholder(R.drawable.ic_launcher_foreground)
+            transformations(CircleCropTransformation())
         }
-        square.text = position.toString()
-        square.setBackgroundColor(color)
     }
-
 }

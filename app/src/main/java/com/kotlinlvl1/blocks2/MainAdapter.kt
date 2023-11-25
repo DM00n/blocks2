@@ -38,11 +38,8 @@ class MainViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val img: ImageView = itemView.findViewById(R.id.img)
 
     fun bind(item: Img) {
-        println(item)
         img.load(item.url){
-            crossfade(true)
             placeholder(R.drawable.ic_launcher_foreground)
-            transformations(CircleCropTransformation())
         }
     }
 }

@@ -6,10 +6,8 @@ import retrofit2.http.Headers
 
 interface ImgApi {
 //    @Headers(
-//        "q: excited",
-//        "key: AIzaSyCbvScE1mgJovQMHrjyH1ZHMv0I8gjuHNE",
-//        "limit: 8"
+//        "per_page: 10",
 //    )
     @GET("beers/random")
-    suspend fun img(): Response<Img>
+    suspend fun img(): Response<List<Img>>
 }

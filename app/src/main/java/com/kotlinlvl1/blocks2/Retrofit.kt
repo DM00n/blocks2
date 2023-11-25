@@ -19,28 +19,13 @@ class RetrofitController(url: String) {
     private val imgApi = rf.create(ImgApi::class.java)
 
     suspend fun getImg(): Result {
-        println("response.toString()")
         val response = imgApi.img()
-
-        println(response.toString())
-//        val res: MutableList<Result> = emptyList<Result>().toMutableList()
-//        if (response.isSuccessful) {
-//            for (img: Img in response.body()!!) {
-//                res.add(Result.OK(img))
-//            }
-//        } else {
-//            res.add(Result.Error(response.code().toString()))
-//        }
         return if (response.isSuccessful) {
-            println(response.toString())
             response.body()?.let{
-                Result.OK(it)
+                Result.OK(it[0])
             } ?: Result.Error("No image")
         } else {
-            println(response.toString())
             Result.Error(response.code().toString())
         }
     }
-//        return res
-//    }
 }

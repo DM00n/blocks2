@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">blocks2</string>
+    <string name="errorCon">Ошибка соединения</string>
+    <string name="errorLoad">Ошибка загрузки</string>
 </resources>

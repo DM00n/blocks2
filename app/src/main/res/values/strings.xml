@@ -2,4 +2,6 @@
     <string name="app_name">blocks2</string>
     <string name="errorCon">Ошибка соединения</string>
     <string name="errorLoad">Ошибка загрузки</string>
+    <string name="retry">Retry</string>
+    <string name="cancel">Cancel</string>
 </resources>

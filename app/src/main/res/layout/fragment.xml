@@ -10,15 +10,39 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="10dp"
-        android:padding="8dp"
-        />
+        android:padding="8dp" />
+
     <ProgressBar
         android:id="@+id/pb"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:indeterminate="true"
-        android:visibility="invisible"
         android:layout_gravity="center"
-        />
+        android:visibility="invisible" />
+
+    <LinearLayout
+        android:id="@+id/buttons"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="center"
+        android:visibility="invisible">
+
+
+        <Button
+            android:id="@+id/retryButton"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:text="@string/retry"
+            android:layout_margin="5dp"/>
+
+        <Button
+            android:id="@+id/cancelButton"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:text="@string/cancel"
+            android:layout_margin="5dp"/>
+    </LinearLayout>
 
 </FrameLayout>

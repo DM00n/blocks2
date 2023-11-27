@@ -26,11 +26,10 @@ class ImgFragment : Fragment() {
             val snackbar =
                 Snackbar.make(binding.linLay, R.string.errorCon, Snackbar.LENGTH_SHORT)
             snackbar.show()
-//            for (i in 1..CURRENT_SPAN) {
-//                adapter.items.add(Img())
-//            }
-//            adapter.notifyItemInserted(adapter.itemCount-1)
             binding.pb.visibility = View.INVISIBLE
+            binding.recycleView.alpha = 0.5F
+            binding.recycleView.setOnTouchListener { _, _ ->  true}
+            binding.buttons.visibility = View.VISIBLE
         }
     }
 
@@ -62,7 +61,7 @@ class ImgFragment : Fragment() {
 
         if (cache.getCache().isEmpty()) {
             binding.pb.visibility = View.VISIBLE
-            getContent(CURRENT_SPAN, CURRENT_PAGE)
+            getContent(ON_PAGE, CURRENT_PAGE)
         } else {
             for (img in cache.getCache()) {
                 adapter.items.add(img)
@@ -76,10 +75,24 @@ class ImgFragment : Fragment() {
                 super.onScrollStateChanged(recyclerView, newState)
                 if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
                     binding.pb.visibility = View.VISIBLE
-                    getContent(CURRENT_SPAN, CURRENT_PAGE)
+                    getContent(ON_PAGE, CURRENT_PAGE)
                 }
             }
         })
+
+        binding.retryButton.setOnClickListener {
+            binding.buttons.visibility = View.INVISIBLE
+            binding.pb.visibility = View.VISIBLE
+            binding.recycleView.setOnTouchListener { _, _ ->  false}
+            binding.recycleView.alpha = 1F
+            getContent(ON_PAGE, CURRENT_PAGE)
+        }
+
+        binding.cancelButton.setOnClickListener {
+            binding.buttons.visibility = View.INVISIBLE
+            binding.recycleView.setOnTouchListener { _, _ ->  false}
+            binding.recycleView.alpha = 1F
+        }
     }
 
     private fun getContent(pageSize: Int, page: Int) {
@@ -111,5 +124,6 @@ class ImgFragment : Fragment() {
         private const val API_URL = "https://api.punkapi.com/v2/"
         private var CURRENT_SPAN = 0
         private var CURRENT_PAGE = 1
+        private var ON_PAGE = 6
     }
 }

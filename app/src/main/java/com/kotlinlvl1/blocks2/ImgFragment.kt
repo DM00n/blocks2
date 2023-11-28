@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.kotlinlvl1.blocks2.databinding.FragmentBinding
+import io.paperdb.Paper
 import kotlinx.coroutines.*
 
 class ImgFragment : Fragment() {
@@ -17,9 +18,9 @@ class ImgFragment : Fragment() {
     private lateinit var adapter: MainAdapter
     private lateinit var binding: FragmentBinding
     private val retrofitController by lazy {
-        RetrofitController(API_URL)
+        context?.let { RetrofitController(API_URL, it) }
     }
-    private val cache = Cache
+//    private val cache = Cache
 
     private val exceptionHandler = CoroutineExceptionHandler { _, _ ->
         MainScope().launch {
@@ -46,7 +47,7 @@ class ImgFragment : Fragment() {
         binding = FragmentBinding.bind(view)
         adapter = MainAdapter()
         binding.recycleView.adapter = adapter
-
+//        getPaperDB()
         CURRENT_SPAN =
             if (this.resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
                 PORTRAIT_SPAN
@@ -59,15 +60,9 @@ class ImgFragment : Fragment() {
             CURRENT_SPAN
         )
 
-        if (cache.getCache().isEmpty()) {
             binding.pb.visibility = View.VISIBLE
             getContent(ON_PAGE, CURRENT_PAGE)
-        } else {
-            for (img in cache.getCache()) {
-                adapter.items.add(img)
-            }
-            adapter.notifyItemInserted(adapter.itemCount - 1)
-        }
+
 
 
         binding.recycleView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
@@ -97,17 +92,21 @@ class ImgFragment : Fragment() {
 
     private fun getContent(pageSize: Int, page: Int) {
         CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
-            val imgResult = retrofitController.getImg(pageSize, page)
+            val imgResult = retrofitController?.getImg(pageSize, page)
             withContext(Dispatchers.Main) {
-                for (img in imgResult) {
-                    when (img) {
-                        is Result.OK -> {
-                            adapter.items.add(img.img)
-                            adapter.notifyItemInserted(adapter.itemCount - 1)
-                            cache.fillCache(img.img)
-                        }
-                        is Result.Error -> {
-//                       setError(imgResult.error)
+                if (imgResult != null) {
+                    for (img in imgResult) {
+                        when (img) {
+                            is Result.OK -> {
+                                adapter.items.add(img.img)
+                                adapter.notifyItemInserted(adapter.itemCount - 1)
+            //                            cache.fillCache(img.img)
+            //                            save()
+                            }
+
+                            is Result.Error -> {
+            //                       setError(imgResult.error)
+                            }
                         }
                     }
                 }

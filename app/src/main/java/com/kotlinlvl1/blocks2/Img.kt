@@ -8,6 +8,7 @@ sealed interface Result {
 }
 
 data class Img(
-    @SerializedName("image_url") val url: String = ""
+    @SerializedName("image_url") val url: String = "",
+    val tmpId: Int = 0
 )
 
